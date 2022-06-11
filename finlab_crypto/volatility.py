@@ -138,14 +138,14 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 #-----------------------------------------------------#
-#          GUI History Volatility Estimators          #
+#          Scatter line History Volatility Estimators          #
 #-----------------------------------------------------#
 # plotly.graph_objects
 def plot_hv(series):
   """plot scatter line of GK history volatility.
 
     Args:
-        series: a pandas series from get_histovol_yz.
+        series: a pandas series from get_histovol_*.
     
     Return: a Figure plotly class to render with fig.show()
     """
@@ -153,6 +153,23 @@ def plot_hv(series):
   fig = go.Figure()
   fig.add_traces(go.Scatter(x=series.index, y = series, mode = 'lines', line=dict(color=colors[0])))
   
+  return fig
+  
+#---------------------   BOX Plot HV estimators ---------------------#
+def box_plotHVs(df):
+  """box plot of GK history volatility.
+
+    Args:
+        dataframe: a pandas dataframe with series from get_histovol_*.
+        (e.g., )
+    
+    Return: a Figure plotly class to render with fig.show()
+    """
+  fig = go.Figure()
+
+  for ts in df:
+    fig.add_trace(go.Box(y=ts))
+
   return fig
   
 #-------------------------------------------------------------------------------#
