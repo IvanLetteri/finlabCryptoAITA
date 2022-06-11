@@ -127,6 +127,49 @@ def get_nbars_binance(symbol, interval, nbars, client):
     data.index = data.index.tz_localize(timezone.utc)
     return data
 
+def get_ncandles_binance(symbol, interval, ncandles=1, save=True, client=Client()):
+    """Getting histrical price data through binance api.
+    Args:
+      symbol (str): Trading pair (ex: BTCUSDT).
+      interval (str): A frequency of the price data (ex: "1m", "5m",'15m', '30m', "1h", '2h', "4h", "1d")
+      save (bool): Save the results in ./history/ to improve the retreive waiting time.
+      client (Binance.Client) (optional): Binance Client object.
+      limit (int): The number of rows to download
+    Returns:
+      pd.DataFrame: OHLCV data for all
+    """
+
+    # download results
+    klines = client.get_historical_klines(symbol, interval, start_str=None, end_str=None, limit=ncandles)
+    data = pd.DataFrame(klines,
+                        columns=['timestamp', 'open', 'high', 'low', 'close',
+                                 'volume', 'close_time', 'quote_av', 'trades',
+                                 'tb_base_av', 'tb_quote_av', 'ignore'], dtype=float)
+    data.index = pd.to_datetime(data['timestamp'], unit='ms')
+    data.index = data.index.tz_localize(timezone.utc)
+    return data
+
+def get_period_binance(symbol, interval, start, end, save=True, client=Client()):
+    """Getting histrical price data through binance api.
+    Args:
+      symbol (str): Trading pair (ex: BTCUSDT).
+      interval (str): A frequency of the price data (ex: "1m", "5m",'15m', '30m', "1h", '2h', "4h", "1d")
+      save (bool): Save the results in ./history/ to improve the retreive waiting time.
+      client (Binance.Client) (optional): Binance Client object.
+      limit (int): The number of rows to download
+    Returns:
+      pd.DataFrame: OHLCV data for all
+    """
+
+    # download results
+    klines = client.get_historical_klines(symbol, interval, start_str=start, end_str=end)
+    data = pd.DataFrame(klines,
+                        columns=['timestamp', 'open', 'high', 'low', 'close',
+                                 'volume', 'close_time', 'quote_av', 'trades',
+                                 'tb_base_av', 'tb_quote_av', 'ignore'], dtype=float)
+    data.index = pd.to_datetime(data['timestamp'], unit='ms')
+    data.index = data.index.tz_localize(timezone.utc)
+    return data
 
 def get_all_bitmex(symbol, kline_size, save=True, client=None):
     """Getting histrical price data through bitmex api.
