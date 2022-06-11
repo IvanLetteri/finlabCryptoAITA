@@ -26,10 +26,10 @@ def get_histovol_parkinson(df, N=30, trading_period=252, clean=True):
     rs = (1.0 / (4.0 * math.log(2.0))) * ((df['high'] / df['low']).apply(np.log))**2.0
 
     def f(v):
-        return (trading_periods * v.mean())**0.5
+        return (trading_period * v.mean())**0.5
     
     result = rs.rolling(
-        window=window,
+        window=N,
         center=False
     ).apply(func=f)
     
