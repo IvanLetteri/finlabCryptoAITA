@@ -137,47 +137,11 @@ def get_histovol_yz(df, N=30, trading_period=252, dropnan=True):
 import plotly.express as px
 import plotly.graph_objects as go
 
-#----------------------------------------------------#
-#                  GUI Parkinson                     #
-#----------------------------------------------------#
+#-----------------------------------------------------#
+#          GUI History Volatility Estimators          #
+#-----------------------------------------------------#
 # plotly.graph_objects
-def plot_phv(series):
-  """plot scatter line of Parkinson history volatility.
-
-    Args:
-        series: a pandas series from get_histovol_yz.
-    
-    Return: a Figure plotly class to render with fig.show()
-    """
-  colors = px.colors.qualitative.Plotly
-  fig = go.Figure()
-  fig.add_traces(go.Scatter(x=series.index, y = series, mode = 'lines', line=dict(color=colors[0])))
-  
-  return fig
-  
-#----------------------------------------------------#
-#                   GUI Yang & Zhang                 #
-#----------------------------------------------------#
-# plotly.graph_objects
-def plot_yzhv(series):
-  """plot scatter line of YZ history volatility.
-
-    Args:
-        series: a pandas series from get_histovol_yz.
-    
-    Return: a Figure plotly class to render with fig.show()
-    """
-  colors = px.colors.qualitative.Plotly
-  fig = go.Figure()
-  fig.add_traces(go.Scatter(x=series.index, y = series, mode = 'lines', line=dict(color=colors[0])))
-  
-  return fig
-
-#----------------------------------------------------#
-#                   GUI Garman Klass                 #
-#----------------------------------------------------#
-# plotly.graph_objects
-def plot_gkhv(series):
+def plot_hv(series):
   """plot scatter line of GK history volatility.
 
     Args:
