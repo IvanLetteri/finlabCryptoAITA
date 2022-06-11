@@ -10,7 +10,7 @@ $$PHV = \sqrt{\frac{1}{4Nln_{ret}2}\sum_{i=1}^N(ln_{ret}\frac{x_t^{(h)}}{x_t^{(l
 where $h_i$ denotes the daily high price, 
 $l_i$ is the daily low price, 
 '''
-
+#where is x_t^{(h)} is high price time series and x_t^{(l)} is the low price time series
 #format dataframe labels ['open,'high','low','close']
 #e.g., to use:
 # from finlab_cryptoAITA.finlab_crypto import volatility
@@ -21,7 +21,7 @@ $l_i$ is the daily low price,
 #line_vol = volatility.plot_phv(gk_vol)
 #line_vol.show()
 
-def get_histovol_parkinson(df, window=30, trading_periods=252, clean=True):
+def get_histovol_parkinson(df, N=30, trading_period=252, clean=True):
 
     rs = (1.0 / (4.0 * math.log(2.0))) * ((df['high'] / df['low']).apply(np.log))**2.0
 
