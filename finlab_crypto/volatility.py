@@ -157,19 +157,28 @@ def plot_hv(series):
   
 #---------------------   BOX Plot HV estimators ---------------------#
 def box_plotHVs(df):
-  """box plot of GK history volatility.
+  """box plot of history volatility estimators.
 
     Args:
         dataframe: a pandas dataframe with series from get_histovol_*.
-        (e.g., )
+        e.g.: 
+          df_boxPlot = pd.DataFrame()
+          df_boxPlot['PHV'] = volatility.get_histovol_parkinson(ohlcv, N=15, trading_period=60*6)
+          df_boxPlot['GKHV'] = volatility.get_histovol_gk(ohlcv, N=15, trading_period=60*6)
+          df_boxPlot['YZHV'] = volatility.get_histovol_yz(ohlcv, N=15, trading_period=60*6)
+    
+          for bp in bpHVs(df_boxPlot):
+            fig = bp
+            fig.show()
     
     Return: a Figure plotly class to render with fig.show()
+    
+    
     """
-  fig = go.Figure()
+  feats = df.columns.tolist()
+  boxPlots = []
+  for ts in feats:
+     boxPlots.append(px.box(df, y=ts))
 
-  for ts in df:
-    fig.add_trace(go.Box(y=ts))
-
-  return fig
-  
+  return boxPlots
 #-------------------------------------------------------------------------------#
