@@ -130,7 +130,46 @@ def get_histovol_yz(df, N=30, trading_period=252, dropnan=True):
         return sigmaYZ.dropna()
     else:
         return sigmaYZ
-        
+
+# Markdown formulas of YZHV
+'''
+The **Rogers & Satchell** volatility:
+$$RS = \sqrt{\frac{1}{N}\sum_{t=1}^{N}
+(ln_{ret}(\frac{x_t^{(h)}}{x_t^{(c)}})
+ln_{ret}(\frac{x_t^{(h)}}{x_t^{(o)}}) + 
+ln_{ret}(\frac{x_t^{(l)}}{x_t^{(c)}})
+ln_{ret}(\frac{x_t^{(l)}}{x_t^{(o)}})}.$$'''
+
+#format dataframe labels ['open,'high','low','close']
+#e.g., to use:
+# from finlabCryptoAITA.finlab_crypto import volatility
+# TICKER = 'WAVESBUSD'
+#TIMEFRAME = '1m'
+#ohlcv = finlab_crypto.crawler.get_ncandles_binance(TICKER, TIMEFRAME, 60*6)
+#yz_vol = volatility.get_histovol_rs(ohlcv, N=60, trading_period=ohlcv.shape[0])
+#line_vol = volatility.plot_hv(rs_vol)
+#line_vol.show()
+    
+def get_histovol_rs(price_data, N=30, trading_period=252, dropnan=True):
+    
+    log_ho = (price_data['high'] / price_data['open']).apply(np.log)
+    log_lo = (price_data['low'] / price_data['open']).apply(np.log)
+    log_co = (price_data['close'] / price_data['open']).apply(np.log)
+    
+    rs = log_ho * (log_ho - log_co) + log_lo * (log_lo - log_co)
+
+    def f(v):
+        return (trading_period * v.mean())**0.5
+    
+    result = rs.rolling(
+        window=N,
+        center=False
+    ).apply(func=f)
+    
+    if dropnan:
+        return result.dropna()
+    else:
+        return result    
 #-----------------------------------------------------------------------------------#
 #-----------------------      PLOT functions        --------------------------------#
 
